@@ -9,7 +9,8 @@ option = st.selectbox("Display option", options=['Temperature', 'Sky'])
 
 st.subheader(f"{option} for next {days} days in {place}")
 
-data, dates = get_data(place, days, option)
-figure = px.line(x=dates, y=data, labels={'x':'Dates', 'y':'Temperatures'})
+if place != '':
+    data, dates = get_data(place, days, option)
+    figure = px.line(x=dates, y=data, labels={'x':'Dates', 'y':'Temperatures'})
 
-st.plotly_chart(figure)
+    st.plotly_chart(figure)
