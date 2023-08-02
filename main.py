@@ -9,8 +9,25 @@ option = st.selectbox("Display option", options=['Temperature', 'Sky'])
 
 st.subheader(f"{option} for next {days} days in {place}")
 
-if place != '':
-    data, dates = get_data(place, days, option)
-    figure = px.line(x=dates, y=data, labels={'x':'Dates', 'y':'Temperatures'})
+if place:
+    data = get_data(place, days)
 
-    st.plotly_chart(figure)
+    if option == 'Temperature':
+        filtered_data = [dict['main']['temp'] for dict in data]
+        dates = [dict['dt_txt'] for dict in data]
+        figure = px.line(x=dates, y=filtered_data, labels={'x':'Dates', 'y':'Temperatures'})
+
+        st.plotly_chart(figure)
+
+    if option == 'Sky':
+        filtered_data = [dict['weather'][0]['main'] for dict in data]
+
+        image_files = {
+            "Clear":"images/clear.png",
+            "Clouds":"images/cloud.png",
+            "Rain":"images/rain.png",
+            "Snow":"images/snow.png"
+            }
+        
+        sky_images = [image_files[condition] for condition in filtered_data]
+        st.image(sky_images, width=100)
