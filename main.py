@@ -12,14 +12,17 @@ st.subheader(f"{option} for next {days} days in {place}")
 if place:
     data = get_data(place, days)
 
-    if option == 'Temperature':
+    if data == '404':
+        st.warning('Please enter a valid city name.')
+
+    elif option == 'Temperature':
         filtered_data = [dict['main']['temp'] for dict in data]
         dates = [dict['dt_txt'] for dict in data]
         figure = px.line(x=dates, y=filtered_data, labels={'x':'Dates', 'y':'Temperatures'})
 
         st.plotly_chart(figure)
 
-    if option == 'Sky':
+    elif option == 'Sky':
         filtered_data = [dict['weather'][0]['main'] for dict in data]
 
         image_files = {
